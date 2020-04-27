@@ -46,12 +46,11 @@ class MainPage : AppCompatActivity() {
     }
 
     private fun savePdf() {
+        val mFileName = fileName.text.toString();
         val mDoc = Document();
-        val mFileName = "pdffailinimi";
         val mFilePath = getExternalFilesDir(null).toString() + "/" + mFileName + ".pdf";
         try {
             PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath));
-
             //open for writing
             mDoc.open();
 
@@ -62,7 +61,7 @@ class MainPage : AppCompatActivity() {
             mDoc.add(Paragraph("Test" + name + " " + " on tema nimi ja" + famName));
 
             mDoc.close()
-            Log.d("Message", mFilePath);
+            Log.d("Path is: ", mFilePath);
             Toast.makeText(this, "Pdf was created successfully: saved to" + mFilePath, Toast.LENGTH_SHORT).show()
 
         }catch (e: Exception){
