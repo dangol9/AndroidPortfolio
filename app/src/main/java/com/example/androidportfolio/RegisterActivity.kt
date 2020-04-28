@@ -13,6 +13,7 @@ import com.example.androidportfolio.ui.login.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_register.*
 
+
 class RegisterActivity : AppCompatActivity() {
 
     //private lateinit var loginViewModel: LoginViewModel

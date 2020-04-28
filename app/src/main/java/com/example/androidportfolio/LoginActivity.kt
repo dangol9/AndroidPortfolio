@@ -46,7 +46,7 @@ class LoginActivity: AppCompatActivity() {
                 //else if output success to console
                 Log.d("Main", "Successfully logged in with user with uid: ${it.result?.user?.uid}" )
                 //if successful - go to MainPage
-                var intent = Intent(this, MainPage::class.java)
+                var intent = Intent(this, ManagePage::class.java)
                 startActivity(intent)
             }
                 //error message if not successful
