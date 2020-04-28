@@ -45,7 +45,10 @@
         android:id="@+id/addData"
         android:layout_width="141dp"
         android:layout_height="wrap_content"
-        android:text="Add data" />
+        android:text="Create PDF"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        />
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

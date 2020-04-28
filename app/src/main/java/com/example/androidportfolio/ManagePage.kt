@@ -2,13 +2,13 @@ package com.example.androidportfolio
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_create_page.*
-
 import kotlinx.android.synthetic.main.activity_manage_page.*
-import kotlinx.android.synthetic.main.activity_manage_page.bottom_navigation
+import java.io.File
+
 
 class ManagePage : AppCompatActivity() {
 
@@ -16,8 +16,28 @@ class ManagePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_page)
         bottomNavBarListenerSetup();
+        listFilesInDirectory();
 
     }
+
+    //hiljem proovida listina
+    private fun listFilesInDirectory(){
+        val path = getExternalFilesDir(null).toString() + "/";
+        Log.d("Files", "Path: " + path);
+        val files = File(path).listFiles()
+        Log.d("Files", "Size: " + files.size)
+        for (i in files.indices) {
+            Log.d("Files", "FileName:" + files[i].name)
+            val fileContainer = TextView(this);
+            fileContainer.textSize = 30f;
+            fileContainer.text = files[i].name;
+            manageLayout.addView(fileContainer);
+
+        }
+
+    }
+
+
     private fun bottomNavBarListenerSetup(){
 
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
