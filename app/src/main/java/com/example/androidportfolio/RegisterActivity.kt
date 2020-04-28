@@ -9,7 +9,6 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 
-import com.example.androidportfolio.ui.login.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -60,6 +59,8 @@ class RegisterActivity : AppCompatActivity() {
                 //else if successful - output to console
                 Log.d("Main", "Successfully created user with uid: ${it.result?.user?.uid}" )
                 Toast.makeText(this, "User created!", Toast.LENGTH_SHORT).show()
+                var intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
             }
                 //error message
             .addOnFailureListener{
