@@ -5,16 +5,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.itextpdf.text.Document
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
-
 import kotlinx.android.synthetic.main.activity_create_page.*
 import java.io.FileOutputStream
-import java.lang.Exception
+
 
 class CreatePage : AppCompatActivity() {
 

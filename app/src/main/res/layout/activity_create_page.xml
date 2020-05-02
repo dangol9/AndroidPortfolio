@@ -10,6 +10,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
+
+
+
     <TextView
         android:id="@+id/text_view_id"
         android:layout_width="238dp"
@@ -49,7 +52,14 @@
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         />
+
+
+
     </LinearLayout>
+
+
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -1,8 +1,12 @@
 package com.example.androidportfolio
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +22,10 @@ class ManagePage : AppCompatActivity() {
         bottomNavBarListenerSetup();
         listFilesInDirectory();
 
+        val builder = VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+        builder.detectFileUriExposure()
+
     }
 
     //hiljem proovida listina
@@ -26,11 +34,18 @@ class ManagePage : AppCompatActivity() {
         Log.d("Files", "Path: " + path);
         val files = File(path).listFiles()
         Log.d("Files", "Size: " + files.size)
+        val intent = Intent(Intent.ACTION_VIEW);
         for (i in files.indices) {
             Log.d("Files", "FileName:" + files[i].name)
             val fileContainer = TextView(this);
             fileContainer.textSize = 30f;
             fileContainer.text = files[i].name;
+            fileContainer.setOnClickListener(View.OnClickListener {
+                intent.setDataAndType(Uri.fromFile(File(path + files[i].name.toString())), "application/pdf")
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }
+            )
             manageLayout.addView(fileContainer);
 
         }
@@ -57,3 +72,4 @@ class ManagePage : AppCompatActivity() {
         }
     }
 }
+
