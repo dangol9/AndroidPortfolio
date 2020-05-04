@@ -11,13 +11,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="238dp"
-            android:layout_height="wrap_content"
-            android:text="Manage Page"
-            android:textSize="80px"
-            />
+
+
 
     </LinearLayout>
 

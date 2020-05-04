@@ -25,24 +25,33 @@
             android:id="@+id/surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:hint="Surname"
-            android:textSize="100px" />
+            android:textSize="50px"
+            />
 
         <EditText
         android:id="@+id/familyName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Family name"
-        android:textSize="100px" />
+        android:gravity="center"
+        android:textSize="50px"
+            android:layout_marginTop="10dp"
+
+            />
 
     <EditText
         android:id="@+id/fileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="File name"
-        android:textSize="100px" />
+        android:textSize="50px"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+
+        />
 
     <Button
         android:id="@+id/addData"
@@ -51,7 +60,10 @@
         android:text="Create PDF"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
+        android:layout_marginTop="20dp"
+
         />
+
 
 
 
