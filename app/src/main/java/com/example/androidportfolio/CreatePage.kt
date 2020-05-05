@@ -1,6 +1,7 @@
 package com.example.androidportfolio
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -11,6 +12,11 @@ import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
 import kotlinx.android.synthetic.main.activity_create_page.*
 import java.io.FileOutputStream
+import java.io.File
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.ktx.storageMetadata
 
 
 class CreatePage : AppCompatActivity() {
@@ -44,6 +50,7 @@ class CreatePage : AppCompatActivity() {
             mDoc.close()
             Log.d("Path is: ", mFilePath);
             Toast.makeText(this, "Pdf was created successfully: saved to" + mFilePath, Toast.LENGTH_SHORT).show()
+            upload(mFilePath, mFileName);
 
         }catch (e: Exception){
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -62,19 +69,45 @@ class CreatePage : AppCompatActivity() {
 
     private fun bottomNavBarListenerSetup(){
 
-        bottom_navigation.setOnNavigationItemSelectedListener {item ->
-            when(item.itemId){//like switch statement
-                R.id.action_create -> {
-                    true
+            bottom_navigation.setOnNavigationItemSelectedListener {item ->
+                when(item.itemId){//like switch statement
+                    R.id.action_create -> {
+                        true
+                    }
+                    R.id.action_manage ->{
+                        val intent = Intent(this, ManagePage::class.java);
+                        startActivity(intent);
+                        true
+                    }
+                    else->true
                 }
-                R.id.action_manage ->{
-                    val intent = Intent(this, ManagePage::class.java);
-                    startActivity(intent);
-                    true
-                }
-                else->true
             }
+    }
+
+    private fun upload(mFilePath: String, mFileName: String) {
+        val storage = Firebase.storage
+        var storageRef = storage.reference
+        // File or Blob
+        // Create the file metadata
+        var metadata = storageMetadata {
+            contentType = "application/pdf"
         }
+        var file = Uri.fromFile(File(getExternalFilesDir(null).toString() + "/" + mFileName + ".pdf"))
+        var uploadTask = storageRef.child("pdfs/$mFileName").putFile(file, metadata)
+        // Upload file and metadata to the path
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.addOnProgressListener {
+        }.addOnPausedListener {
+            println("Upload is paused")
+        }.addOnFailureListener {
+            Log.d("CreatePage", "Failed to upload: $file" + " "+ mFilePath )
+            Toast.makeText(this, "PDF failed!", Toast.LENGTH_SHORT).show()
+        }.addOnSuccessListener {
+            Log.d("CreatePage", "Successfully uploaded pdf: $file" )
+            Toast.makeText(this, "PDF uploaded!", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 

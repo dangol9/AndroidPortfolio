@@ -11,6 +11,9 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_manage_page.*
 import java.io.File
 
@@ -35,32 +38,36 @@ class ManagePage : AppCompatActivity() {
 
     //hiljem proovida listina
     private fun listFilesInDirectory(path: String){
-        Log.d("Files", "Path: " + path);
-        val files = File(path).listFiles()
-        Log.d("Files", "Size: " + files.size)
-        val intent = Intent(Intent.ACTION_VIEW);
-        for (i in files.indices) {
-            Log.d("Files", "FileName:" + files[i].name)
-            buildView(files[i], path);
+        val storage = Firebase.storage
+        val listRef = storage.reference.child("pdfs/")
 
-        }
+        listRef.listAll()
+            .addOnSuccessListener { listResult ->
+                listResult.items.forEach { item ->
+                    buildView(item, path);
+                }
+            }
+            .addOnFailureListener {
+                Log.d("Managepage", "Failed to fetch" )
+            }
 
     }
 
-    private fun buildView(file: File, path: String){
+    private fun buildView(storageFile: StorageReference, path: String){
         val parentLayout = LinearLayout(this);
         parentLayout.orientation = LinearLayout.HORIZONTAL;
         parentLayout.gravity = Gravity.CENTER;
+
         val textViewLayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
         textViewLayoutParams.setMargins(25, 20, 25, 10);
 
         val fileNameView = TextView(this);
         fileNameView.textSize = 20f;
-        fileNameView.text = file.name;
+        fileNameView.text = storageFile.name;
         fileNameView.setOnClickListener(View.OnClickListener {
-            intent.setDataAndType(Uri.fromFile(File(path + file.name.toString())), "application/pdf")
+            //opening the file internally
+            val intent = Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.fromFile(File(path + storageFile.name + ".pdf")));
             startActivity(intent);
         });
 
@@ -74,17 +81,31 @@ class ManagePage : AppCompatActivity() {
         val fileRemoveIconView = TextView(this);
         fileRemoveIconView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove, 0,0,0);
         fileRemoveIconView.setTextColor(Color.BLACK);
-        fileRemoveIconView.setOnClickListener{
-            Toast.makeText(this,"Remove", Toast.LENGTH_SHORT).show();
-            file.delete();
-            finish();
-            startActivity(getIntent());
-        }
+
+        removeIconListener(fileRemoveIconView, storageFile, path)
 
         parentLayout.addView(fileNameView, textViewLayoutParams)
         parentLayout.addView(fileEditIconView, textViewLayoutParams);
         parentLayout.addView(fileRemoveIconView, textViewLayoutParams);
         manageLayout.addView(parentLayout);
+    }
+
+    private fun removeIconListener(view : View, storageFile: StorageReference, path: String){
+        val storage = Firebase.storage
+        val fileRef = storage.reference.child("pdfs/${storageFile.name}");
+        view.setOnClickListener{
+            Toast.makeText(this,"Remove", Toast.LENGTH_SHORT).show();
+            val file = File(path + storageFile.name + ".pdf");
+            file.delete();
+            fileRef.delete().addOnSuccessListener {
+                Log.d("Managepage", "File: ${storageFile.name} deleted successfuly");
+            }.addOnFailureListener {
+                Log.d("Managepage", "File: ${storageFile.name} deleted unsuccessfuly");
+            }
+            //refresh page
+            finish();
+            startActivity(getIntent());
+        }
     }
 
 
