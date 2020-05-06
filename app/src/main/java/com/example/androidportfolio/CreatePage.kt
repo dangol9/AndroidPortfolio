@@ -93,7 +93,7 @@ class CreatePage : AppCompatActivity() {
             contentType = "application/pdf"
         }
         var file = Uri.fromFile(File(getExternalFilesDir(null).toString() + "/" + mFileName + ".pdf"))
-        var uploadTask = storageRef.child("pdfs/$mFileName").putFile(file, metadata)
+        var uploadTask = storageRef.child("pdfs/$mFileName.pdf").putFile(file, metadata)
         // Upload file and metadata to the path
 
         // Listen for state changes, errors, and completion of the upload.

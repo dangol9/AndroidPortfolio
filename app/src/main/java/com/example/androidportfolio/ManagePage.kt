@@ -16,6 +16,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_manage_page.*
 import java.io.File
+import java.lang.ref.Reference
 
 
 class ManagePage : AppCompatActivity() {
@@ -41,10 +42,22 @@ class ManagePage : AppCompatActivity() {
         val storage = Firebase.storage
         val listRef = storage.reference.child("pdfs/")
 
+
         listRef.listAll()
             .addOnSuccessListener { listResult ->
                 listResult.items.forEach { item ->
-                    buildView(item, path);
+                    val file = File(path + item.name);
+                    if(file.exists()){
+                        buildView(item, path);
+                    }else{
+                        val fileRef = storage.reference.child("pdfs/" + item.name);
+                        fileRef.getFile(file).addOnSuccessListener {
+                            buildView(item, path);
+                            Log.d("File creation", "Successful");
+                        }.addOnFailureListener{
+                            Log.d("File creation", "Unsuccessful");
+                        }
+                    }
                 }
             }
             .addOnFailureListener {
@@ -52,6 +65,7 @@ class ManagePage : AppCompatActivity() {
             }
 
     }
+
 
     private fun buildView(storageFile: StorageReference, path: String){
         val parentLayout = LinearLayout(this);
@@ -67,7 +81,7 @@ class ManagePage : AppCompatActivity() {
         fileNameView.setOnClickListener(View.OnClickListener {
             //opening the file internally
             val intent = Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.fromFile(File(path + storageFile.name + ".pdf")));
+            intent.setData(Uri.fromFile(File(path + storageFile.name)));
             startActivity(intent);
         });
 
@@ -95,7 +109,7 @@ class ManagePage : AppCompatActivity() {
         val fileRef = storage.reference.child("pdfs/${storageFile.name}");
         view.setOnClickListener{
             Toast.makeText(this,"Remove", Toast.LENGTH_SHORT).show();
-            val file = File(path + storageFile.name + ".pdf");
+            val file = File(path + storageFile.name);
             file.delete();
             fileRef.delete().addOnSuccessListener {
                 Log.d("Managepage", "File: ${storageFile.name} deleted successfuly");
@@ -106,6 +120,10 @@ class ManagePage : AppCompatActivity() {
             finish();
             startActivity(getIntent());
         }
+    }
+
+    private fun downloadFile(){
+
     }
 
 
