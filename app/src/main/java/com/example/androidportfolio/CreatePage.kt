@@ -6,17 +6,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.ktx.storageMetadata
 import com.itextpdf.text.Chunk
 import com.itextpdf.text.Document
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
 import kotlinx.android.synthetic.main.activity_create_page.*
-import java.io.FileOutputStream
 import java.io.File
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.UploadTask
-import com.google.firebase.storage.ktx.storage
-import com.google.firebase.storage.ktx.storageMetadata
+import java.io.FileOutputStream
 
 
 class CreatePage : AppCompatActivity() {
@@ -27,7 +26,20 @@ class CreatePage : AppCompatActivity() {
         setContentView(R.layout.activity_create_page)
         bottomNavBarListenerSetup();
         createPdfButtonListener();
+        Toast.makeText(this, "Logged in as: " + showEmail(), Toast.LENGTH_SHORT).show()
 
+
+
+
+
+    }
+
+
+     private fun showEmail(): String? {
+        val bundle = intent.extras
+        val email = bundle!!.getString("email")
+        var emailCut = email?.substring(0, email.lastIndexOf("@"));
+         return emailCut.toString()
     }
 
     private fun createPdfButtonListener(){
@@ -39,7 +51,7 @@ class CreatePage : AppCompatActivity() {
     private fun savePdf() {
         val mFileName = fileName.text.toString();
         val mDoc = Document();
-        val mFilePath = getExternalFilesDir(null).toString() + "/" + mFileName + ".pdf";
+        val mFilePath = getExternalFilesDir(showEmail()).toString() + "/" + mFileName + ".pdf";
         try {
             PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath));
             //open for writing
@@ -75,7 +87,10 @@ class CreatePage : AppCompatActivity() {
                         true
                     }
                     R.id.action_manage ->{
+                        val bundle = intent.extras
+                        val email = bundle!!.getString("email")
                         val intent = Intent(this, ManagePage::class.java);
+                        intent.putExtra("email", email)
                         startActivity(intent);
                         true
                     }
@@ -92,8 +107,8 @@ class CreatePage : AppCompatActivity() {
         var metadata = storageMetadata {
             contentType = "application/pdf"
         }
-        var file = Uri.fromFile(File(getExternalFilesDir(null).toString() + "/" + mFileName + ".pdf"))
-        var uploadTask = storageRef.child("pdfs/$mFileName.pdf").putFile(file, metadata)
+        var file = Uri.fromFile(File(getExternalFilesDir(showEmail()).toString() + "/" + mFileName + ".pdf"))
+        var uploadTask = storageRef.child("pdfs/${showEmail()}/$mFileName.pdf").putFile(file, metadata)
         // Upload file and metadata to the path
 
         // Listen for state changes, errors, and completion of the upload.
@@ -101,7 +116,7 @@ class CreatePage : AppCompatActivity() {
         }.addOnPausedListener {
             println("Upload is paused")
         }.addOnFailureListener {
-            Log.d("CreatePage", "Failed to upload: $file" + " "+ mFilePath )
+            Log.d("CreatePage", "Failed to upload: $file $mFilePath")
             Toast.makeText(this, "PDF failed!", Toast.LENGTH_SHORT).show()
         }.addOnSuccessListener {
             Log.d("CreatePage", "Successfully uploaded pdf: $file" )

@@ -22,10 +22,24 @@ import java.lang.ref.Reference
 class ManagePage : AppCompatActivity() {
 
 
+
+
+
+
+
+    private fun showEmail(): String? {
+        val bundle = intent.extras
+        val email = bundle!!.getString("email")
+        var emailCut = email?.substring(0, email.lastIndexOf("@"));
+        return emailCut.toString()
+
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_page)
-        val path = getExternalFilesDir(null).toString() + "/";
+        val path = getExternalFilesDir(showEmail()).toString() + "/";
 
         bottomNavBarListenerSetup();
         listFilesInDirectory(path);
@@ -35,12 +49,17 @@ class ManagePage : AppCompatActivity() {
         StrictMode.setVmPolicy(builder.build())
         builder.detectFileUriExposure()
 
+
+
     }
+
+
+
 
     //hiljem proovida listina
     private fun listFilesInDirectory(path: String){
         val storage = Firebase.storage
-        val listRef = storage.reference.child("pdfs/")
+        val listRef = storage.reference.child("pdfs/${showEmail()}/")
 
 
         listRef.listAll()
@@ -50,7 +69,7 @@ class ManagePage : AppCompatActivity() {
                     if(file.exists()){
                         buildView(item, path);
                     }else{
-                        val fileRef = storage.reference.child("pdfs/" + item.name);
+                        val fileRef = storage.reference.child("pdfs/${showEmail()}/" + item.name);
                         fileRef.getFile(file).addOnSuccessListener {
                             buildView(item, path);
                             Log.d("File creation", "Successful");
@@ -106,7 +125,7 @@ class ManagePage : AppCompatActivity() {
 
     private fun removeIconListener(view : View, storageFile: StorageReference, path: String){
         val storage = Firebase.storage
-        val fileRef = storage.reference.child("pdfs/${storageFile.name}");
+        val fileRef = storage.reference.child("pdfs/${showEmail()}/${storageFile.name}");
         view.setOnClickListener{
             Toast.makeText(this,"Remove", Toast.LENGTH_SHORT).show();
             val file = File(path + storageFile.name);
@@ -131,7 +150,10 @@ class ManagePage : AppCompatActivity() {
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
             when(item.itemId){//like switch statement
                 R.id.action_create -> {
+                    val bundle = intent.extras
+                    val email = bundle!!.getString("email")
                     val intent = Intent(this, CreatePage::class.java);
+                    intent.putExtra("email", email)
                     startActivity(intent);
                     true
                 }

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7A51313"
-    android:backgroundTint="#F7A51313">
+    android:background="@color/colorPrimary">
 
     <EditText
         android:id="@+id/email_login"

@@ -1,13 +1,14 @@
 package com.example.androidportfolio
 
+import android.R.id.message
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+
 
 class LoginActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +30,7 @@ class LoginActivity: AppCompatActivity() {
         }
 
     }
+
     private fun performLogIn(){
         val email = email_login.text.toString()
         val password = password_login.text.toString()
@@ -46,12 +48,21 @@ class LoginActivity: AppCompatActivity() {
                 //else if output success to console
                 Log.d("Main", "Successfully logged in with user with uid: ${it.result?.user?.uid}" )
                 //if successful - go to MainPage
+
                 var intent = Intent(this, ManagePage::class.java)
+                intent.putExtra("email", email)
                 startActivity(intent)
+
+
+
+
+
+
             }
                 //error message if not successful
             .addOnFailureListener{
                 Log.d("Main", "Failed to log in user: ${it.message}")
+                Toast.makeText(this, "Failed to log in: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
