@@ -18,7 +18,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator
 import kotlinx.android.synthetic.main.activity_create_page.*
 import java.io.File
 import java.io.FileOutputStream
-import dialogViews.*;
+import dialogViews.*
 
 
 class CreatePage : AppCompatActivity() {
@@ -27,11 +27,11 @@ class CreatePage : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_page)
-        bottomNavBarListenerSetup();
-        createPdfButtonListener();
+        bottomNavBarListenerSetup()
+        createPdfButtonListener()
 
         personalInformationTextView.setOnClickListener{
-            personalInformationView(this);
+            personalInformationView(this)
         }
 
         jobExperienceTextView.setOnClickListener {
@@ -39,11 +39,11 @@ class CreatePage : AppCompatActivity() {
         }
 
         educationTextView.setOnClickListener {
-            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show()
         }
 
         personalSkillsTextView.setOnClickListener {
-            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -51,25 +51,25 @@ class CreatePage : AppCompatActivity() {
 
     private fun createPdfButtonListener(){
         addData.setOnClickListener {
-            savePdf();
+            savePdf()
         }
     }
 
     private fun savePdf() {
-        val mFileName = fileName.text.toString();
-        val mDoc = Document();
-        val mFilePath = getExternalFilesDir(null).toString() + "/" + mFileName + ".pdf";
+        val mFileName = fileName.text.toString()
+        val mDoc = Document()
+        val mFilePath = getExternalFilesDir(null).toString() + "/" + mFileName + ".pdf"
         try {
-            PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath));
+            PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
             //open for writing
-            mDoc.open();
+            mDoc.open()
 
-            createPdfTemplate(mDoc);
+            createPdfTemplate(mDoc)
 
             mDoc.close()
-            Log.d("Pdf created ", mFilePath);
+            Log.d("Pdf created ", mFilePath)
             Toast.makeText(this, "Pdf was created successfully", Toast.LENGTH_SHORT).show()
-            upload(mFilePath, mFileName);
+            upload(mFilePath, mFileName)
 
         }catch (e: Exception){
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -78,19 +78,19 @@ class CreatePage : AppCompatActivity() {
     }
 
     private fun createPdfTemplate(mDoc: Document){
-        //val name = surname.text.toString();
+        //val name = surname.text.toString()
         val boldFont = Font(Font.FontFamily.TIMES_ROMAN,22f , Font.BOLD)
-        val lineSeparator = LineSeparator();
+        val lineSeparator = LineSeparator()
 
         val paragraph = Paragraph("$surname $familyName", boldFont)
-        paragraph.alignment = Paragraph.ALIGN_LEFT;
+        paragraph.alignment = Paragraph.ALIGN_LEFT
 
-        mDoc.addAuthor("$surname $familyName");
+        mDoc.addAuthor("$surname $familyName")
 
-        mDoc.add(paragraph);
-        mDoc.add(Chunk(lineSeparator));
+        mDoc.add(paragraph)
+        mDoc.add(Chunk(lineSeparator))
 
-        mDoc.add(Chunk.NEWLINE);
+        mDoc.add(Chunk.NEWLINE)
     }
 
 
@@ -102,7 +102,7 @@ class CreatePage : AppCompatActivity() {
         var metadata = storageMetadata {
             contentType = "application/pdf"
         }
-        var file = Uri.fromFile(File(mFilePath));
+        var file = Uri.fromFile(File(mFilePath))
         var uploadTask = storageRef.child("pdfs/$mFileName.pdf").putFile(file, metadata)
         // Upload file and metadata to the path
 
@@ -124,8 +124,8 @@ class CreatePage : AppCompatActivity() {
                     true
                 }
                 R.id.action_manage ->{
-                    val intent = Intent(this, ManagePage::class.java);
-                    startActivity(intent);
+                    val intent = Intent(this, ManagePage::class.java)
+                    startActivity(intent)
                     true
                 }
                 else->true
