@@ -11,40 +11,60 @@
         android:orientation="vertical"
         android:gravity="center">
 
-
-
-    <TextView
-        android:id="@+id/text_view_id"
-        android:layout_width="238dp"
-        android:layout_height="wrap_content"
-        android:text="Add text here"
-        android:textSize="100px"
+        <TextView
+            android:id="@+id/text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create your CV"
+            android:textSize="100px"
+            android:textStyle="bold"
         />
 
         <TextView
-            android:id="@+id/personalInformation"
-            android:layout_width="match_parent"
+            android:id="@+id/personalInformationTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:hint="Personal Information"
             android:textSize="50px"
-            />
+        />
 
         <TextView
-        android:id="@+id/familyName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Family name"
-        android:gravity="center"
-        android:textSize="50px"
+            android:id="@+id/jobExperienceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Job experience"
+            android:gravity="center"
+            android:textSize="50px"
+            android:layout_marginTop="10dp"
+        />
+
+        <TextView
+            android:id="@+id/educationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Education"
+            android:gravity="center"
+            android:textSize="50px"
             android:layout_marginTop="10dp"
 
-            />
+        />
+        <TextView
+            android:id="@+id/personalSkillsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Personal Skills"
+            android:gravity="center"
+            android:textSize="50px"
+            android:layout_marginTop="10dp"
 
-    <EditText
+        />
+
+
+        <EditText
         android:id="@+id/fileName"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="File name"
         android:textSize="50px"
@@ -53,24 +73,17 @@
 
         />
 
-    <Button
-        android:id="@+id/addData"
-        android:layout_width="141dp"
-        android:layout_height="wrap_content"
-        android:text="Create CV"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="20dp"
-
+        <Button
+            android:id="@+id/addData"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:text="Create CV"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"
         />
 
-
-
-
     </LinearLayout>
-
-
-
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

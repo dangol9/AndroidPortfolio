@@ -5,5 +5,10 @@
     <item type="id" name="street" />
     <item type="id" name="city" />
     <item type="id" name="postalCode" />
+    <item type="id" name="startDay" />
+    <item type="id" name="startMonth" />
+    <item type="id" name="startYear" />
+
+
 
 </resources>

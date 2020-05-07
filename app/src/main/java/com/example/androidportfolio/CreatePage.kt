@@ -4,11 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -22,6 +18,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator
 import kotlinx.android.synthetic.main.activity_create_page.*
 import java.io.File
 import java.io.FileOutputStream
+import dialogViews.*;
 
 
 class CreatePage : AppCompatActivity() {
@@ -33,9 +30,23 @@ class CreatePage : AppCompatActivity() {
         bottomNavBarListenerSetup();
         createPdfButtonListener();
 
-        personalInformation.setOnClickListener{
-            personalInformationView();
+        personalInformationTextView.setOnClickListener{
+            personalInformationView(this);
         }
+
+        jobExperienceTextView.setOnClickListener {
+            jobExperienceView(this)
+        }
+
+        educationTextView.setOnClickListener {
+            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show();
+        }
+
+        personalSkillsTextView.setOnClickListener {
+            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     private fun createPdfButtonListener(){
@@ -71,10 +82,10 @@ class CreatePage : AppCompatActivity() {
         val boldFont = Font(Font.FontFamily.TIMES_ROMAN,22f , Font.BOLD)
         val lineSeparator = LineSeparator();
 
-        val paragraph = Paragraph(surname + " " + familyName, boldFont)
+        val paragraph = Paragraph("$surname $familyName", boldFont)
         paragraph.alignment = Paragraph.ALIGN_LEFT;
 
-        mDoc.addAuthor(surname + " " + familyName);
+        mDoc.addAuthor("$surname $familyName");
 
         mDoc.add(paragraph);
         mDoc.add(Chunk(lineSeparator));
@@ -105,57 +116,6 @@ class CreatePage : AppCompatActivity() {
 
     }
 
-    private var surname = "";
-    private var familyName = "";
-    private var street = "";
-    private var city = "";
-    private var postalCode = "";
-
-
-    private fun personalInformationView(){
-        val verticalParentView = LinearLayout(this);
-        verticalParentView.orientation = LinearLayout.VERTICAL;
-        verticalParentView.gravity = Gravity.CENTER;
-
-        val horizontalParentView = LinearLayout(this);
-        horizontalParentView.orientation = LinearLayout.HORIZONTAL;
-        horizontalParentView.gravity = Gravity.CENTER;
-
-        val alert = AlertDialog.Builder(this)
-        alert.setTitle("Personal Information");
-
-        val surnameView = createEditText("Surname", R.id.surname)
-        val familyNameView = createEditText("Family name", R.id.familyName)
-        val streetView = createEditText("Street name and number", R.id.street)
-        val postalCodeView = createEditText("Postal Code", R.id.postalCode)
-        val cityView = createEditText("City", R.id.city)
-
-        verticalParentView.addView(surnameView);
-        verticalParentView.addView(familyNameView);
-        verticalParentView.addView(streetView);
-        horizontalParentView.addView(postalCodeView);
-        horizontalParentView.addView(cityView);
-        verticalParentView.addView(horizontalParentView);
-
-
-        alert.setView(verticalParentView);
-        alert.setPositiveButton("Done"){dialog, which ->
-            surname = surnameView.text.toString();
-            familyName = familyNameView.text.toString();
-            street = streetView.text.toString();
-            city = cityView.text.toString();
-            postalCode = postalCodeView.text.toString();
-        }
-        alert.show()
-    }
-
-    private fun createEditText(hint: String, id: Int): EditText {
-        val view = EditText(this)
-        view.hint = hint
-        view.id = id
-        return view;
-    }
-
     private fun bottomNavBarListenerSetup(){
 
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
@@ -172,6 +132,5 @@ class CreatePage : AppCompatActivity() {
             }
         }
     }
-
-
 }
+
