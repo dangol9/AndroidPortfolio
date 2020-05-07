@@ -20,6 +20,7 @@
 
         <activity
             android:name=".CreatePage"
+            android:label="Create CV"
             android:windowSoftInputMode="adjustResize">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -29,8 +30,8 @@
         </activity>
         <activity
             android:name=".ManagePage"
-            android:label="@string/title_activity_manage_page"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="Manage CV-s"
+           />
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name"/>

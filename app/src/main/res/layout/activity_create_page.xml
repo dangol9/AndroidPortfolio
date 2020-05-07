@@ -21,17 +21,17 @@
         android:textSize="100px"
         />
 
-        <EditText
-            android:id="@+id/surname"
+        <TextView
+            android:id="@+id/personalInformation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:hint="Surname"
+            android:hint="Personal Information"
             android:textSize="50px"
             />
 
-        <EditText
+        <TextView
         android:id="@+id/familyName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:id="@+id/addData"
         android:layout_width="141dp"
         android:layout_height="wrap_content"
-        android:text="Create PDF"
+        android:text="Create CV"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         android:layout_marginTop="20dp"

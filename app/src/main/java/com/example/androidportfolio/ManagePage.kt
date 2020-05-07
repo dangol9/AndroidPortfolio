@@ -16,7 +16,6 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_manage_page.*
 import java.io.File
-import java.lang.ref.Reference
 
 
 class ManagePage : AppCompatActivity() {
@@ -48,11 +47,11 @@ class ManagePage : AppCompatActivity() {
                 listResult.items.forEach { item ->
                     val file = File(path + item.name);
                     if(file.exists()){
-                        buildView(item, path);
+                        buildListOfFilesView(item, path);
                     }else{
                         val fileRef = storage.reference.child("pdfs/" + item.name);
                         fileRef.getFile(file).addOnSuccessListener {
-                            buildView(item, path);
+                            buildListOfFilesView(item, path);
                             Log.d("File creation", "Successful");
                         }.addOnFailureListener{
                             Log.d("File creation", "Unsuccessful");
@@ -67,7 +66,7 @@ class ManagePage : AppCompatActivity() {
     }
 
 
-    private fun buildView(storageFile: StorageReference, path: String){
+    private fun buildListOfFilesView(storageFile: StorageReference, path: String){
         val parentLayout = LinearLayout(this);
         parentLayout.orientation = LinearLayout.HORIZONTAL;
         parentLayout.gravity = Gravity.CENTER;
@@ -101,6 +100,7 @@ class ManagePage : AppCompatActivity() {
         parentLayout.addView(fileNameView, textViewLayoutParams)
         parentLayout.addView(fileEditIconView, textViewLayoutParams);
         parentLayout.addView(fileRemoveIconView, textViewLayoutParams);
+        //adding linearlayouts onto managelayout
         manageLayout.addView(parentLayout);
     }
 
@@ -121,11 +121,6 @@ class ManagePage : AppCompatActivity() {
             startActivity(getIntent());
         }
     }
-
-    private fun downloadFile(){
-
-    }
-
 
     private fun bottomNavBarListenerSetup(){
         bottom_navigation.setOnNavigationItemSelectedListener {item ->

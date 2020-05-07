@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <item type="id" name="surname" />
+    <item type="id" name="familyName" />
+    <item type="id" name="street" />
+    <item type="id" name="city" />
+    <item type="id" name="postalCode" />
+
+</resources>
