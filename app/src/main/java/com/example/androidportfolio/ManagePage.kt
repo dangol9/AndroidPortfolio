@@ -11,12 +11,12 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_manage_page.*
 import java.io.File
-import java.lang.ref.Reference
 
 
 class ManagePage : AppCompatActivity() {
@@ -24,13 +24,17 @@ class ManagePage : AppCompatActivity() {
 
 
 
-
+    private fun logOut(){
+        FirebaseAuth.getInstance().signOut();
+        var intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
 
 
     private fun showEmail(): String? {
         val bundle = intent.extras
         val email = bundle!!.getString("email")
-        var emailCut = email?.substring(0, email.lastIndexOf("@"));
+        var emailCut = email?.substring(0, email.lastIndexOf("@"))
         return emailCut.toString()
 
 
@@ -39,15 +43,21 @@ class ManagePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_page)
-        val path = getExternalFilesDir(showEmail()).toString() + "/";
+        val path = getExternalFilesDir(showEmail()).toString() + "/"
+        Toast.makeText(this, "Logged in as: " + showEmail(), Toast.LENGTH_SHORT).show()
 
-        bottomNavBarListenerSetup();
-        listFilesInDirectory(path);
+        bottomNavBarListenerSetup()
+        listFilesInDirectory(path)
+
+        log_out_button.setOnClickListener{
+            logOut()
+        }
 
         //essential if sdk >= 24
         val builder = VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
         builder.detectFileUriExposure()
+
 
 
 
@@ -65,16 +75,16 @@ class ManagePage : AppCompatActivity() {
         listRef.listAll()
             .addOnSuccessListener { listResult ->
                 listResult.items.forEach { item ->
-                    val file = File(path + item.name);
+                    val file = File(path + item.name)
                     if(file.exists()){
-                        buildView(item, path);
+                        buildListOfFilesView(item, path)
                     }else{
-                        val fileRef = storage.reference.child("pdfs/${showEmail()}/" + item.name);
+                        val fileRef = storage.reference.child("pdfs/${showEmail()}/" + item.name)
                         fileRef.getFile(file).addOnSuccessListener {
-                            buildView(item, path);
-                            Log.d("File creation", "Successful");
+                            buildListOfFilesView(item, path)
+                            Log.d("File creation", "Successful")
                         }.addOnFailureListener{
-                            Log.d("File creation", "Unsuccessful");
+                            Log.d("File creation", "Unsuccessful")
                         }
                     }
                 }
@@ -86,65 +96,61 @@ class ManagePage : AppCompatActivity() {
     }
 
 
-    private fun buildView(storageFile: StorageReference, path: String){
-        val parentLayout = LinearLayout(this);
-        parentLayout.orientation = LinearLayout.HORIZONTAL;
-        parentLayout.gravity = Gravity.CENTER;
+    private fun buildListOfFilesView(storageFile: StorageReference, path: String){
+        val parentLayout = LinearLayout(this)
+        parentLayout.orientation = LinearLayout.HORIZONTAL
+        parentLayout.gravity = Gravity.CENTER
 
-        val textViewLayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        textViewLayoutParams.setMargins(25, 20, 25, 10);
+        val textViewLayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        textViewLayoutParams.setMargins(25, 20, 25, 10)
 
-        val fileNameView = TextView(this);
-        fileNameView.textSize = 20f;
-        fileNameView.text = storageFile.name;
+        val fileNameView = TextView(this)
+        fileNameView.textSize = 20f
+        fileNameView.text = storageFile.name
         fileNameView.setOnClickListener(View.OnClickListener {
             //opening the file internally
-            val intent = Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.fromFile(File(path + storageFile.name)));
-            startActivity(intent);
-        });
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.fromFile(File(path + storageFile.name)))
+            startActivity(intent)
+        })
 
-        val fileEditIconView = TextView(this);
-        fileEditIconView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit, 0,0,0);
-        fileEditIconView.setTextColor(Color.BLACK);
+        val fileEditIconView = TextView(this)
+        fileEditIconView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit, 0,0,0)
+        fileEditIconView.setTextColor(Color.BLACK)
         fileEditIconView.setOnClickListener{
-            Toast.makeText(this,"Edit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Edit", Toast.LENGTH_SHORT).show()
         }
 
-        val fileRemoveIconView = TextView(this);
-        fileRemoveIconView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove, 0,0,0);
-        fileRemoveIconView.setTextColor(Color.BLACK);
+        val fileRemoveIconView = TextView(this)
+        fileRemoveIconView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove, 0,0,0)
+        fileRemoveIconView.setTextColor(Color.BLACK)
 
         removeIconListener(fileRemoveIconView, storageFile, path)
 
         parentLayout.addView(fileNameView, textViewLayoutParams)
-        parentLayout.addView(fileEditIconView, textViewLayoutParams);
-        parentLayout.addView(fileRemoveIconView, textViewLayoutParams);
-        manageLayout.addView(parentLayout);
+        parentLayout.addView(fileEditIconView, textViewLayoutParams)
+        parentLayout.addView(fileRemoveIconView, textViewLayoutParams)
+        //adding linearlayouts onto managelayout
+        manageLayout.addView(parentLayout)
     }
 
     private fun removeIconListener(view : View, storageFile: StorageReference, path: String){
         val storage = Firebase.storage
-        val fileRef = storage.reference.child("pdfs/${showEmail()}/${storageFile.name}");
+        val fileRef = storage.reference.child("pdfs/${showEmail()}/${storageFile.name}")
         view.setOnClickListener{
-            Toast.makeText(this,"Remove", Toast.LENGTH_SHORT).show();
-            val file = File(path + storageFile.name);
-            file.delete();
+            Toast.makeText(this,"Remove", Toast.LENGTH_SHORT).show()
+            val file = File(path + storageFile.name)
+            file.delete()
             fileRef.delete().addOnSuccessListener {
-                Log.d("Managepage", "File: ${storageFile.name} deleted successfuly");
+                Log.d("Managepage", "File: ${storageFile.name} deleted successfuly")
             }.addOnFailureListener {
-                Log.d("Managepage", "File: ${storageFile.name} deleted unsuccessfuly");
+                Log.d("Managepage", "File: ${storageFile.name} deleted unsuccessfuly")
             }
             //refresh page
-            finish();
-            startActivity(getIntent());
+            finish()
+            startActivity(getIntent())
         }
     }
-
-    private fun downloadFile(){
-
-    }
-
 
     private fun bottomNavBarListenerSetup(){
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
@@ -152,9 +158,9 @@ class ManagePage : AppCompatActivity() {
                 R.id.action_create -> {
                     val bundle = intent.extras
                     val email = bundle!!.getString("email")
-                    val intent = Intent(this, CreatePage::class.java);
+                    val intent = Intent(this, CreatePage::class.java)
                     intent.putExtra("email", email)
-                    startActivity(intent);
+                    startActivity(intent)
                     true
                 }
                 R.id.action_manage ->{
@@ -166,4 +172,3 @@ class ManagePage : AppCompatActivity() {
     }
 
 }
-

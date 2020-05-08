@@ -16,11 +16,15 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".CreatePage"
-            android:label="Create CV"
             tools:ignore="DuplicateActivity"/>
 
         <activity
+<<<<<<< HEAD
             android:name=".LoginActivity"
+=======
+            android:name=".CreatePage"
+            android:label="Create CV"
+>>>>>>> 5f0c395044f59a81905b9d04c3653a59ab67e5e4
             android:windowSoftInputMode="adjustResize">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

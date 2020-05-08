@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <item type="id" name="surname" />
+    <item type="id" name="familyName" />
+    <item type="id" name="street" />
+    <item type="id" name="city" />
+    <item type="id" name="postalCode" />
+    <item type="id" name="startDay" />
+    <item type="id" name="startMonth" />
+    <item type="id" name="startYear" />
+    <item type="id" name="endDay" />
+    <item type="id" name="endMonth" />
+    <item type="id" name="endYear" />
+    <item type="id" name="occupation" />
+    <item type="id" name="employerName" />
+    <item type="id" name="employerCity" />
+    <item type="id" name="employerCountry" />
+    <item type="id" name="duties" />
+
+
+</resources>
