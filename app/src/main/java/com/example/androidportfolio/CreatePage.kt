@@ -88,22 +88,68 @@ class CreatePage: AppCompatActivity() {
             }
         }
 
-        private fun createPdfTemplate(mDoc: Document) {
-            //val name = surname.text.toString()
-            val boldFont = Font(Font.FontFamily.TIMES_ROMAN, 22f, Font.BOLD)
-            val lineSeparator = LineSeparator()
+    private fun createPdfTemplate(mDoc: Document) {
+        val boldFont = Font(Font.FontFamily.TIMES_ROMAN, 22f, Font.BOLD)
+        val boldFont2 = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.BOLD)
+        val lineSeparator = LineSeparator()
 
-            val paragraph = Paragraph("$surname $familyName", boldFont)
-            paragraph.alignment = Paragraph.ALIGN_LEFT
+        val paragraph = Paragraph("$surname $familyName", boldFont)
+        paragraph.alignment = Paragraph.ALIGN_LEFT
 
-            mDoc.addAuthor("$surname $familyName")
+        mDoc.addAuthor("$surname $familyName")
 
-            mDoc.add(paragraph)
-            mDoc.add(Chunk(lineSeparator))
+        val jobField = Paragraph()
+        jobField.add(Chunk(occupation, boldFont2))
+        jobField.add(Chunk(" (${jobStartDate} - ${jobEndDate})"))
 
-            mDoc.add(Chunk.NEWLINE)
+        val eduField = Paragraph()
+        eduField.add(Chunk(schoolName, boldFont2))
+        eduField.add(Chunk(" ${schoolCity}, ${schoolCountry}"))
+        eduField.add(Chunk(" (${eduStartDate} - ${eduEndDate})"))
 
-        }
+        mDoc.add(paragraph)
+        mDoc.add(Chunk(lineSeparator))
+        mDoc.add(Paragraph("$surname $familyName"))
+        mDoc.add(Paragraph("${street}, ${city}, ${postalCode}"))
+
+        mDoc.add(Chunk.NEWLINE);
+        mDoc.add(Paragraph("Job experience", boldFont))
+        mDoc.add(Chunk(lineSeparator))
+        mDoc.add(Paragraph(employerName, boldFont2))
+        mDoc.add(jobField)
+        mDoc.add(Paragraph(duties))
+
+        mDoc.add(Chunk.NEWLINE);
+        mDoc.add(Paragraph("Education", boldFont))
+        mDoc.add(Chunk(lineSeparator))
+        mDoc.add(eduField)
+
+        mDoc.add(Chunk.NEWLINE);
+        mDoc.add(Paragraph("Personal Skills", boldFont))
+        mDoc.add(Chunk(lineSeparator))
+        mDoc.add(Paragraph("Native Language: ${nativeLanguage}"))
+        mDoc.add(Paragraph("Foreign Languages: ", boldFont2))
+        mDoc.add(Paragraph(listOfForeignLangauges))
+        mDoc.add(Paragraph("Communication Skill: ${communicationSkill}"))
+        mDoc.add(Paragraph("Leading Skill: ${leadingSkill}"))
+        mDoc.add(Paragraph("Job skills:", boldFont2))
+        mDoc.add(Paragraph(listOfJobSkills))
+        mDoc.add(Paragraph("Digital skills:", boldFont2))
+        mDoc.add(Paragraph(listOfDigitalSkills))
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 
 
 
