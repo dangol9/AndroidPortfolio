@@ -25,15 +25,20 @@ fun personalSkillsView(context : Context){
     verticalParentView.orientation = LinearLayout.VERTICAL
     verticalParentView.gravity = Gravity.CENTER
 
-    val horizontalParentView = createHorizontalLayout(context)
+    val communicationHorizontalView = createHorizontalLayout(context)
+    val leadingHorizontalView = createHorizontalLayout(context)
 
-    val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+    val comTextView = TextView(context)
+    comTextView.text = "Communication"
+    val leadTextView = TextView(context)
+    leadTextView.text = "Leading"
 
 
     val nativeLanguageView = createEditTextView(context, R.id.nativeLanguage, "Native language")
     val communicationSkillView = createSpinnerView(context, R.id.communicationSkill)
     val leadingSkillView = createSpinnerView(context, R.id.leadingSkill)
-    val foreignLanguages = createEditTextView(context, R.id.foreignLanguages, "Foreign langauges here")
+    val foreignLanguages = createEditTextView(context, R.id.foreignLanguages, "Foreign langauges (Spanish - A1)")
     val jobSkillsView = createEditTextView(context, R.id.jobSkills, "Write your job skills here")
     jobSkillsView.setLines(3)
     val digitalSkillsView= createEditTextView(context, R.id.digitalSkills, "Write your digital skills here")
@@ -49,9 +54,12 @@ fun personalSkillsView(context : Context){
 
     verticalParentView.addView(nativeLanguageView)
     verticalParentView.addView(foreignLanguages)
-    horizontalParentView.addView(communicationSkillView, layoutParams)
-    horizontalParentView.addView(leadingSkillView, layoutParams)
-    verticalParentView.addView(horizontalParentView)
+    communicationHorizontalView.addView(comTextView)
+    communicationHorizontalView.addView(communicationSkillView)
+    leadingHorizontalView.addView(leadTextView)
+    leadingHorizontalView.addView(leadingSkillView)
+    verticalParentView.addView(communicationHorizontalView)
+    verticalParentView.addView(leadingHorizontalView)
     verticalParentView.addView(jobSkillsView)
     verticalParentView.addView(digitalSkillsView)
 
