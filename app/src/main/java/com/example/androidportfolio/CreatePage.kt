@@ -1,9 +1,12 @@
 package com.example.androidportfolio
+
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -14,11 +17,10 @@ import com.itextpdf.text.Font
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
+import dialogViews.*
 import kotlinx.android.synthetic.main.activity_create_page.*
 import java.io.File
 import java.io.FileOutputStream
-import dialogViews.*
-
 
 
 class CreatePage: AppCompatActivity() {
@@ -27,6 +29,8 @@ class CreatePage: AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_page)
+
+        supportActionBar?.setDisplayShowTitleEnabled(false);
         bottomNavBarListenerSetup()
         createPdfButtonListener()
 
@@ -40,20 +44,20 @@ class CreatePage: AppCompatActivity() {
         }
 
         educationTextView.setOnClickListener {
-            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show()
+            educationView(this)
         }
 
         personalSkillsTextView.setOnClickListener {
-            Toast.makeText(this, "In progress", Toast.LENGTH_SHORT).show()
+            personalSkillsView(this)
         }
     }
 
 
         private fun showEmail(): String? {
-            val bundle = intent.extras
-            val email = bundle!!.getString("email")
-            var emailCut = email?.substring(0, email.lastIndexOf("@"));
-            return emailCut.toString()
+           // val bundle = intent.extras
+            //val email = bundle!!.getString("email")
+           // var emailCut = email?.substring(0, email.lastIndexOf("@"));
+            return "kaarel"
         }
 
         fun createPdfButtonListener() {
@@ -140,9 +144,9 @@ class CreatePage: AppCompatActivity() {
                     }
                     R.id.action_manage -> {
                         val bundle = intent.extras
-                        val email = bundle!!.getString("email")
+                        //val email = bundle!!.getString("email")
                         val intent = Intent(this, ManagePage::class.java)
-                        intent.putExtra("email", email)
+                        //intent.putExtra("email", email)
                         startActivity(intent);
                         true
                     }

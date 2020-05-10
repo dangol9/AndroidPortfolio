@@ -10,8 +10,8 @@ import utils.createEditTextView
 import utils.createHorizontalLayout
 import utils.createSpinnerView
 
-var startDate = ""
-var endDate = ""
+var jobStartDate = ""
+var jobEndDate = ""
 var occupation = ""
 var employerName = ""
 var employerCity = ""
@@ -29,6 +29,11 @@ fun jobExperienceView(context : Context){
     verticalParentView.orientation = LinearLayout.VERTICAL
     verticalParentView.gravity = Gravity.CENTER
 
+    val whole = LinearLayout(context)
+    whole.orientation = LinearLayout.VERTICAL
+    whole.gravity = Gravity.CENTER
+
+
     val fromHorizontalParentView = createHorizontalLayout(context)
     val upToHorizontalParentView = createHorizontalLayout(context)
     val detailsHorizontalParentView = createHorizontalLayout(context)
@@ -40,25 +45,16 @@ fun jobExperienceView(context : Context){
     val fromTextView = TextView(context)
     fromTextView.text = "From"
 
-    val startDayView = createSpinnerView(context, R.id.startDay)
-    val startMonthView = createSpinnerView(context, R.id.startMonth)
-    val startYearView = createSpinnerView(context, R.id.startYear)
+    val startDayView = createSpinnerView(context, R.id.jobStartDay)
+    val startMonthView = createSpinnerView(context, R.id.jobStartMonth)
+    val startYearView = createSpinnerView(context, R.id.jobStartYear)
 
     val upToTextView = TextView(context)
     upToTextView.text = "Up to"
 
-    val endDayView= createSpinnerView(context, R.id.endDay)
-    val endMonthView= createSpinnerView(context, R.id.endMonth)
-    val endYearView =createSpinnerView(context, R.id.endYear)
-
-    val occupationView = createEditTextView(context,  R.id.occupation, "Occupation")
-    val employerNameView = createEditTextView(context,  R.id.employerName, "Employer name")
-    val employerCityView = createEditTextView(context,  R.id.employerCity, "City")
-    val employerCountryView = createEditTextView(context,  R.id.employerCountry, "Country")
-
-    val listOfDutiesView = createEditTextView(context,  R.id.duties, "Duties")
-    listOfDutiesView.setLines(4)
-
+    val endDayView= createSpinnerView(context, R.id.jobEndDay)
+    val endMonthView= createSpinnerView(context, R.id.jobEndMonth)
+    val endYearView =createSpinnerView(context, R.id.jobEndYear)
 
     val dayAdapter = ArrayAdapter<Int>(context, android.R.layout.simple_spinner_dropdown_item, days)
     val monthAdapter = ArrayAdapter<Int>(context, android.R.layout.simple_spinner_dropdown_item, months)
@@ -71,6 +67,18 @@ fun jobExperienceView(context : Context){
     endDayView.adapter = dayAdapter
     endMonthView.adapter = monthAdapter
     endYearView.adapter = yearAdapter
+
+    val occupationView = createEditTextView(context,  R.id.occupation, "Occupation")
+    val employerNameView = createEditTextView(context,  R.id.employerName, "Employer name")
+    val employerCityView = createEditTextView(context,  R.id.employerCity, "City")
+    val employerCountryView = createEditTextView(context,  R.id.employerCountry, "Country")
+
+    val listOfDutiesView = createEditTextView(context,  R.id.duties, "Duties")
+    listOfDutiesView.setLines(4)
+
+    val button = Button(context)
+    button.id = R.id.buttonId
+    button.text = "Click here for more"
 
     fromHorizontalParentView.addView(fromTextView,layoutParams)
     fromHorizontalParentView.addView(startDayView,layoutParams)
@@ -89,12 +97,13 @@ fun jobExperienceView(context : Context){
     detailsHorizontalParentView.addView(employerCountryView, layoutParams)
     verticalParentView.addView(detailsHorizontalParentView)
     verticalParentView.addView(listOfDutiesView)
+    verticalParentView.addView(button)
 
     alert.setView(verticalParentView)
 
     alert.setPositiveButton("Done"){_, _ ->
-        startDate = startDayView.selectedItem.toString() + "/" + startMonthView.selectedItem.toString() + "/" + startYearView.selectedItem.toString()
-        endDate = endDayView.selectedItem.toString() + "/" + endMonthView.selectedItem.toString() + "/" + endYearView.selectedItem.toString()
+        jobStartDate = startDayView.selectedItem.toString() + "/" + startMonthView.selectedItem.toString() + "/" + startYearView.selectedItem.toString()
+        jobEndDate = endDayView.selectedItem.toString() + "/" + endMonthView.selectedItem.toString() + "/" + endYearView.selectedItem.toString()
         occupation = occupationView.text.toString()
         employerName = employerNameView.text.toString()
         employerCity = employerCityView.text.toString()

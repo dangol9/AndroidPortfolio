@@ -5,17 +5,35 @@
     <item type="id" name="street" />
     <item type="id" name="city" />
     <item type="id" name="postalCode" />
-    <item type="id" name="startDay" />
-    <item type="id" name="startMonth" />
-    <item type="id" name="startYear" />
-    <item type="id" name="endDay" />
-    <item type="id" name="endMonth" />
-    <item type="id" name="endYear" />
+    <item type="id" name="jobStartDay" />
+    <item type="id" name="jobStartMonth" />
+    <item type="id" name="jobStartYear" />
+    <item type="id" name="jobEndDay" />
+    <item type="id" name="jobEndMonth" />
+    <item type="id" name="jobEndYear" />
     <item type="id" name="occupation" />
     <item type="id" name="employerName" />
     <item type="id" name="employerCity" />
     <item type="id" name="employerCountry" />
     <item type="id" name="duties" />
+
+    <item type="id" name="eduStartDay" />
+    <item type="id" name="eduStartMonth" />
+    <item type="id" name="eduStartYear" />
+    <item type="id" name="eduEndDay" />
+    <item type="id" name="eduEndMonth" />
+    <item type="id" name="eduEndYear" />
+    <item type="id" name="schoolName" />
+    <item type="id" name="schoolCity" />
+    <item type="id" name="schoolCountry" />
+
+    <item type="id" name="communicationSkill" />
+    <item type="id" name="nativeLanguage" />
+    <item type="id" name="leadingSkill" />
+    <item type="id" name="jobSkills" />
+    <item type="id" name="digitalSkills" />
+    <item type="id" name="foreignLanguages" />
+    <item type="id" name="buttonId" />
 
 
 </resources>

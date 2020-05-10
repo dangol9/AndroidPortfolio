@@ -15,12 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CreatePage"
-            android:label="Create CV"
+            android:name=".LoginActivity"
             tools:ignore="DuplicateActivity"/>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".CreatePage"
+            android:label="CVApp"
             android:windowSoftInputMode="adjustResize">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

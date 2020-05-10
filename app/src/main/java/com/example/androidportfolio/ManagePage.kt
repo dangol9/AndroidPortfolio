@@ -33,9 +33,9 @@ class ManagePage : AppCompatActivity() {
 
     private fun showEmail(): String? {
         val bundle = intent.extras
-        val email = bundle!!.getString("email")
-        var emailCut = email?.substring(0, email.lastIndexOf("@"))
-        return emailCut.toString()
+        //val email = bundle!!.getString("email")
+        //var emailCut = email?.substring(0, email.lastIndexOf("@"))
+        return "kaarel"
 
 
     }
@@ -157,9 +157,9 @@ class ManagePage : AppCompatActivity() {
             when(item.itemId){//like switch statement
                 R.id.action_create -> {
                     val bundle = intent.extras
-                    val email = bundle!!.getString("email")
+                    //val email = bundle!!.getString("email")
                     val intent = Intent(this, CreatePage::class.java)
-                    intent.putExtra("email", email)
+                    //intent.putExtra("email", email)
                     startActivity(intent)
                     true
                 }
