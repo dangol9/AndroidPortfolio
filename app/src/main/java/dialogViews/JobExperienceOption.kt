@@ -2,45 +2,68 @@ package dialogViews
 
 import android.content.Context
 import android.view.Gravity
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.androidportfolio.R
-import java.util.*
 import utils.createEditTextView
 import utils.createHorizontalLayout
 import utils.createSpinnerView
+import utils.createYearList
 
-var jobStartDate = ""
-var jobEndDate = ""
-var occupation = ""
-var employerName = ""
-var employerCity = ""
-var employerCountry = ""
-var duties = ""
+var occupation : MutableList<EditText> = arrayListOf()
+var employerName: MutableList<EditText> = arrayListOf()
+var employerCity: MutableList<EditText> = arrayListOf()
+var employerCountry : MutableList<EditText> = arrayListOf()
+var duties : MutableList<EditText> = arrayListOf()
+var jobStartDay : MutableList<Spinner> = arrayListOf()
+var jobStartMonth : MutableList<Spinner> = arrayListOf()
+var jobStartYear : MutableList<Spinner> = arrayListOf()
+var jobEndDay : MutableList<Spinner> = arrayListOf()
+var jobEndMonth : MutableList<Spinner> = arrayListOf()
+var jobEndYear : MutableList<Spinner> = arrayListOf()
+
+private val days = arrayOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31)
+private val months = arrayOf(1,2,3,4,5,6,7,8,9,10,11,12)
 
 fun jobExperienceView(context : Context){
     val alert = AlertDialog.Builder(context)
     alert.setTitle("Job experience")
 
-    val days = arrayOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31)
-    val months = arrayOf(1,2,3,4,5,6,7,8,9,10,11,12)
-
     val verticalParentView = LinearLayout(context)
     verticalParentView.orientation = LinearLayout.VERTICAL
     verticalParentView.gravity = Gravity.CENTER
 
-    val whole = LinearLayout(context)
-    whole.orientation = LinearLayout.VERTICAL
-    whole.gravity = Gravity.CENTER
+    val scrollView = ScrollView(context)
+
+    addJobView(context, verticalParentView)
+
+    scrollView.addView(verticalParentView)
+    alert.setView(scrollView)
+
+    alert.setPositiveButton("Done"){_, _ ->
+        Toast.makeText(context, "duties", Toast.LENGTH_SHORT).show()
+    }
+    alert.setNegativeButton("Add new", null)
+
+    val alertDialog = alert.create()
+    alertDialog.show()
+    //so that it does not dismiss
+    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+        addJobView(context, verticalParentView)
+    }
+
+}
 
 
-    val fromHorizontalParentView = createHorizontalLayout(context)
-    val upToHorizontalParentView = createHorizontalLayout(context)
-    val detailsHorizontalParentView = createHorizontalLayout(context)
+
+private fun addJobView(context: Context, parent: LinearLayout){
+
+    val startDatesHorizontalParentView = createHorizontalLayout(context)
+    val endDatesHorizontalParentView = createHorizontalLayout(context)
+    val childHorizontalView = createHorizontalLayout(context)
 
     val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-
-
 
     val fromTextView = TextView(context)
     fromTextView.text = "From"
@@ -76,50 +99,43 @@ fun jobExperienceView(context : Context){
     val listOfDutiesView = createEditTextView(context,  R.id.duties, "Duties")
     listOfDutiesView.setLines(4)
 
-    val button = Button(context)
-    button.id = R.id.buttonId
-    button.text = "Click here for more"
+    occupation.add(occupationView)
+    employerName.add(employerNameView)
+    employerCity.add(employerCityView)
+    employerCountry.add(employerCountryView)
+    duties.add(listOfDutiesView)
+    jobStartDay.add(startDayView)
+    jobStartMonth.add(startMonthView)
+    jobStartYear.add(startYearView)
+    jobEndDay.add(endDayView)
+    jobEndMonth.add(endMonthView)
+    jobEndYear.add(endYearView)
 
-    fromHorizontalParentView.addView(fromTextView,layoutParams)
-    fromHorizontalParentView.addView(startDayView,layoutParams)
-    fromHorizontalParentView.addView(startMonthView,layoutParams)
-    fromHorizontalParentView.addView(startYearView,layoutParams)
-    verticalParentView.addView(fromHorizontalParentView)
 
-    upToHorizontalParentView.addView(upToTextView,layoutParams)
-    upToHorizontalParentView.addView(endDayView, layoutParams)
-    upToHorizontalParentView.addView(endMonthView, layoutParams)
-    upToHorizontalParentView.addView(endYearView, layoutParams)
-    verticalParentView.addView(upToHorizontalParentView)
-    verticalParentView.addView(occupationView)
-    verticalParentView.addView(employerNameView, layoutParams)
-    detailsHorizontalParentView.addView(employerCityView, layoutParams)
-    detailsHorizontalParentView.addView(employerCountryView, layoutParams)
-    verticalParentView.addView(detailsHorizontalParentView)
-    verticalParentView.addView(listOfDutiesView)
-    verticalParentView.addView(button)
+    startDatesHorizontalParentView.addView(fromTextView,layoutParams)
+    startDatesHorizontalParentView.addView(startDayView,layoutParams)
+    startDatesHorizontalParentView.addView(startMonthView,layoutParams)
+    startDatesHorizontalParentView.addView(startYearView,layoutParams)
+    parent.addView(startDatesHorizontalParentView)
 
-    alert.setView(verticalParentView)
+    endDatesHorizontalParentView.addView(upToTextView,layoutParams)
+    endDatesHorizontalParentView.addView(endDayView, layoutParams)
+    endDatesHorizontalParentView.addView(endMonthView, layoutParams)
+    endDatesHorizontalParentView.addView(endYearView, layoutParams)
+    parent.addView(endDatesHorizontalParentView)
 
-    alert.setPositiveButton("Done"){_, _ ->
-        jobStartDate = startDayView.selectedItem.toString() + "/" + startMonthView.selectedItem.toString() + "/" + startYearView.selectedItem.toString()
-        jobEndDate = endDayView.selectedItem.toString() + "/" + endMonthView.selectedItem.toString() + "/" + endYearView.selectedItem.toString()
-        occupation = occupationView.text.toString()
-        employerName = employerNameView.text.toString()
-        employerCity = employerCityView.text.toString()
-        employerCountry = employerCountryView.text.toString()
-        duties = listOfDutiesView.text.toString()
+    parent.addView(occupationView)
 
-    }
-    alert.show()
-}
+    childHorizontalView.addView(employerNameView)
+    childHorizontalView.addView(employerCityView)
+    childHorizontalView.addView(employerCountryView)
+    parent.addView(childHorizontalView)
+    parent.addView(listOfDutiesView)
 
-fun createYearList(): MutableList<Int>{
-    val years: MutableList<Int> = arrayListOf()
-    var i = 1920
-    var currentYear = Calendar.getInstance().get(Calendar.YEAR)
-    while (i <= currentYear){
-        years.add(currentYear--)
-    }
-    return years
+    val lineParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 5)
+    val line = View(context)
+
+    line.setBackgroundResource(R.color.colorPrimary)
+    parent.addView(line, lineParams)
+
 }

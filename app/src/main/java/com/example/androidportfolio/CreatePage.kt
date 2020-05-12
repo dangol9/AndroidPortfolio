@@ -1,12 +1,10 @@
 package com.example.androidportfolio
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -98,9 +96,9 @@ class CreatePage: AppCompatActivity() {
 
         mDoc.addAuthor("$surname $familyName")
 
-        val jobField = Paragraph()
-        jobField.add(Chunk(occupation, boldFont2))
-        jobField.add(Chunk(" (${jobStartDate} - ${jobEndDate})"))
+        //val jobField = Paragraph()
+        //jobField.add(Chunk(occupation, boldFont2))
+        //jobField.add(Chunk(" (${jobStartDate} - ${jobEndDate})"))
 
         val eduField = Paragraph()
         eduField.add(Chunk(schoolName, boldFont2))
@@ -115,9 +113,11 @@ class CreatePage: AppCompatActivity() {
         mDoc.add(Chunk.NEWLINE);
         mDoc.add(Paragraph("Job experience", boldFont))
         mDoc.add(Chunk(lineSeparator))
-        mDoc.add(Paragraph(employerName, boldFont2))
-        mDoc.add(jobField)
-        mDoc.add(Paragraph(duties))
+
+        createJobExperienceField(mDoc)
+        //mDoc.add(Paragraph(employerName, boldFont2))
+        //mDoc.add(jobField)
+        //mDoc.add(Paragraph(duties))
 
         mDoc.add(Chunk.NEWLINE);
         mDoc.add(Paragraph("Education", boldFont))
@@ -137,68 +137,70 @@ class CreatePage: AppCompatActivity() {
         mDoc.add(Paragraph("Digital skills:", boldFont2))
         mDoc.add(Paragraph(listOfDigitalSkills))
 
+    }
 
+    private fun createJobExperienceField(mDoc: Document){
+        val boldFont2 = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.BOLD)
+        val italic = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.ITALIC)
 
+        for(i in occupation.indices){
+            val startDate = jobStartDay[i].selectedItem.toString() + "/" + jobStartMonth[i].selectedItem.toString() + "/" + jobStartYear[i].selectedItem.toString()
+            val endDate = jobEndDay[i].selectedItem.toString() + "/" + jobEndMonth[i].selectedItem.toString() + "/" + jobEndYear[i].selectedItem.toString()
+            val occupation = occupation[i].text.toString();
+            val employerName = employerName[i].text.toString()
+            val employerCity = employerCity[i].text.toString()
+            val employerCountry = employerCountry[i].text.toString()
+            val duties = duties[i].text.toString()
 
+            mDoc.add(Paragraph("$occupation $startDate - $endDate, $employerCity, $employerCountry", boldFont2))
+            mDoc.add(Paragraph(employerName, italic))
+            mDoc.add(Paragraph(duties))
+        }
+    }
 
+    private fun upload(mFilePath: String, mFileName: String) {
+        val storage = Firebase.storage
+        var storageRef = storage.reference
+        // File or Blob
+        // Create the file metadata
+        var metadata = storageMetadata {
+            contentType = "application/pdf"
+        }
+        var file =
+            Uri.fromFile(File(getExternalFilesDir(showEmail()).toString() + "/" + mFileName + ".pdf"))
+        var uploadTask =
+            storageRef.child("pdfs/${showEmail()}/$mFileName.pdf").putFile(file, metadata)
+        // Upload file and metadata to the path
 
-
-
-
-
-
-
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.addOnProgressListener {
+        }.addOnFailureListener {
+            Log.d("CreatePage", "Failed to upload: $file $mFilePath")
+            Toast.makeText(this, "PDF failed!", Toast.LENGTH_SHORT).show()
+        }.addOnSuccessListener {
+            Log.d("CreatePage", "Successfully uploaded pdf: $file")
+        }
 
     }
 
+    private fun bottomNavBarListenerSetup() {
 
-
-
-
-
-        private fun upload(mFilePath: String, mFileName: String) {
-            val storage = Firebase.storage
-            var storageRef = storage.reference
-            // File or Blob
-            // Create the file metadata
-            var metadata = storageMetadata {
-                contentType = "application/pdf"
-            }
-            var file =
-                Uri.fromFile(File(getExternalFilesDir(showEmail()).toString() + "/" + mFileName + ".pdf"))
-            var uploadTask =
-                storageRef.child("pdfs/${showEmail()}/$mFileName.pdf").putFile(file, metadata)
-            // Upload file and metadata to the path
-
-            // Listen for state changes, errors, and completion of the upload.
-            uploadTask.addOnProgressListener {
-            }.addOnFailureListener {
-                Log.d("CreatePage", "Failed to upload: $file $mFilePath")
-                Toast.makeText(this, "PDF failed!", Toast.LENGTH_SHORT).show()
-            }.addOnSuccessListener {
-                Log.d("CreatePage", "Successfully uploaded pdf: $file")
-            }
-
-        }
-
-        private fun bottomNavBarListenerSetup() {
-
-            bottom_navigation.setOnNavigationItemSelectedListener { item ->
-                when (item.itemId) {//like switch statement
-                    R.id.action_create -> {
-                        true
-                    }
-                    R.id.action_manage -> {
-                        val bundle = intent.extras
-                        //val email = bundle!!.getString("email")
-                        val intent = Intent(this, ManagePage::class.java)
-                        //intent.putExtra("email", email)
-                        startActivity(intent);
-                        true
-                    }
-                    else -> true
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {//like switch statement
+                R.id.action_create -> {
+                    true
                 }
+                R.id.action_manage -> {
+                    val bundle = intent.extras
+                    //val email = bundle!!.getString("email")
+                    val intent = Intent(this, ManagePage::class.java)
+                    //intent.putExtra("email", email)
+                    startActivity(intent);
+                    true
+                }
+                else -> true
             }
         }
+    }
 }
 
