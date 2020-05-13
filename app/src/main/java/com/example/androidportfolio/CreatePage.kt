@@ -96,15 +96,6 @@ class CreatePage: AppCompatActivity() {
 
         mDoc.addAuthor("$surname $familyName")
 
-        //val jobField = Paragraph()
-        //jobField.add(Chunk(occupation, boldFont2))
-        //jobField.add(Chunk(" (${jobStartDate} - ${jobEndDate})"))
-
-        val eduField = Paragraph()
-        eduField.add(Chunk(schoolName, boldFont2))
-        eduField.add(Chunk(" ${schoolCity}, ${schoolCountry}"))
-        eduField.add(Chunk(" (${eduStartDate} - ${eduEndDate})"))
-
         mDoc.add(paragraph)
         mDoc.add(Chunk(lineSeparator))
         mDoc.add(Paragraph("$surname $familyName"))
@@ -113,16 +104,12 @@ class CreatePage: AppCompatActivity() {
         mDoc.add(Chunk.NEWLINE);
         mDoc.add(Paragraph("Job experience", boldFont))
         mDoc.add(Chunk(lineSeparator))
-
         createJobExperienceField(mDoc)
-        //mDoc.add(Paragraph(employerName, boldFont2))
-        //mDoc.add(jobField)
-        //mDoc.add(Paragraph(duties))
 
         mDoc.add(Chunk.NEWLINE);
         mDoc.add(Paragraph("Education", boldFont))
         mDoc.add(Chunk(lineSeparator))
-        mDoc.add(eduField)
+        createEducationField(mDoc)
 
         mDoc.add(Chunk.NEWLINE);
         mDoc.add(Paragraph("Personal Skills", boldFont))
@@ -155,6 +142,20 @@ class CreatePage: AppCompatActivity() {
             mDoc.add(Paragraph("$occupation $startDate - $endDate, $employerCity, $employerCountry", boldFont2))
             mDoc.add(Paragraph(employerName, italic))
             mDoc.add(Paragraph(duties))
+        }
+    }
+
+    private fun createEducationField(mDoc: Document){
+        val boldFont2 = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.BOLD)
+
+        for(i in schoolName.indices){
+            val startDate = eduStartDay[i].selectedItem.toString() + "/" + eduStartMonth[i].selectedItem.toString() + "/" + eduStartYear[i].selectedItem.toString()
+            val endDate = eduEndDay[i].selectedItem.toString() + "/" + eduEndMonth[i].selectedItem.toString() + "/" + eduEndYear[i].selectedItem.toString()
+            val schoolName = schoolName[i].text.toString()
+            val city = schoolCity[i].text.toString()
+            val country = schoolCountry[i].text.toString()
+
+            mDoc.add(Paragraph("$schoolName $startDate - $endDate, $city, $country", boldFont2))
         }
     }
 

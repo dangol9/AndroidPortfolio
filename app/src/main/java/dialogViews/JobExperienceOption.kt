@@ -42,7 +42,6 @@ fun jobExperienceView(context : Context){
     alert.setView(scrollView)
 
     alert.setPositiveButton("Done"){_, _ ->
-        Toast.makeText(context, "duties", Toast.LENGTH_SHORT).show()
     }
     alert.setNegativeButton("Add new", null)
 
