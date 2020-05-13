@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 >
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/top_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/holo_blue_light"
+        app:titleTextColor="@android:color/white"
+        app:menu="@menu/top_nav_menu"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

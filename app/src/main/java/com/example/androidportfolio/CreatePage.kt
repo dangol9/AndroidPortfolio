@@ -27,11 +27,9 @@ class CreatePage: AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_page)
-
-        supportActionBar?.setDisplayShowTitleEnabled(false);
+        topNavBarListenerSetup()
         bottomNavBarListenerSetup()
         createPdfButtonListener()
-
 
         personalInformationTextView.setOnClickListener {
             personalInformationView(this)
@@ -51,40 +49,40 @@ class CreatePage: AppCompatActivity() {
     }
 
 
-        private fun showEmail(): String? {
-           // val bundle = intent.extras
-            //val email = bundle!!.getString("email")
-           // var emailCut = email?.substring(0, email.lastIndexOf("@"));
-            return "kaarel"
+    private fun showEmail(): String? {
+        // val bundle = intent.extras
+        //val email = bundle!!.getString("email")
+        // var emailCut = email?.substring(0, email.lastIndexOf("@"));
+        return "kaarel"
+    }
+
+    fun createPdfButtonListener() {
+        addData.setOnClickListener {
+            savePdf()
         }
+    }
 
-        fun createPdfButtonListener() {
-            addData.setOnClickListener {
-                savePdf()
-            }
+    private fun savePdf() {
+        val mFileName = fileName.text.toString();
+        val mDoc = Document();
+        val mFilePath = getExternalFilesDir(showEmail()).toString() + "/" + mFileName + ".pdf"
+        try {
+            PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
+            //open for writing
+            mDoc.open()
+
+            createPdfTemplate(mDoc)
+
+            mDoc.close()
+            Log.d("Pdf created ", mFilePath)
+            Toast.makeText(this, "Pdf was created successfully", Toast.LENGTH_SHORT).show()
+            upload(mFilePath, mFileName)
+
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+
         }
-
-        private fun savePdf() {
-            val mFileName = fileName.text.toString();
-            val mDoc = Document();
-            val mFilePath = getExternalFilesDir(showEmail()).toString() + "/" + mFileName + ".pdf"
-            try {
-                PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
-                //open for writing
-                mDoc.open()
-
-                createPdfTemplate(mDoc)
-
-                mDoc.close()
-                Log.d("Pdf created ", mFilePath)
-                Toast.makeText(this, "Pdf was created successfully", Toast.LENGTH_SHORT).show()
-                upload(mFilePath, mFileName)
-
-            } catch (e: Exception) {
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-
-            }
-        }
+    }
 
     private fun createPdfTemplate(mDoc: Document) {
         val boldFont = Font(Font.FontFamily.TIMES_ROMAN, 22f, Font.BOLD)
@@ -126,31 +124,40 @@ class CreatePage: AppCompatActivity() {
 
     }
 
-    private fun createJobExperienceField(mDoc: Document){
+    private fun createJobExperienceField(mDoc: Document) {
         val boldFont2 = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.BOLD)
         val italic = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.ITALIC)
 
-        for(i in occupation.indices){
-            val startDate = jobStartDay[i].selectedItem.toString() + "/" + jobStartMonth[i].selectedItem.toString() + "/" + jobStartYear[i].selectedItem.toString()
-            val endDate = jobEndDay[i].selectedItem.toString() + "/" + jobEndMonth[i].selectedItem.toString() + "/" + jobEndYear[i].selectedItem.toString()
+        for (i in occupation.indices) {
+            val startDate =
+                jobStartDay[i].selectedItem.toString() + "/" + jobStartMonth[i].selectedItem.toString() + "/" + jobStartYear[i].selectedItem.toString()
+            val endDate =
+                jobEndDay[i].selectedItem.toString() + "/" + jobEndMonth[i].selectedItem.toString() + "/" + jobEndYear[i].selectedItem.toString()
             val occupation = occupation[i].text.toString();
             val employerName = employerName[i].text.toString()
             val employerCity = employerCity[i].text.toString()
             val employerCountry = employerCountry[i].text.toString()
             val duties = duties[i].text.toString()
 
-            mDoc.add(Paragraph("$occupation $startDate - $endDate, $employerCity, $employerCountry", boldFont2))
+            mDoc.add(
+                Paragraph(
+                    "$occupation $startDate - $endDate, $employerCity, $employerCountry",
+                    boldFont2
+                )
+            )
             mDoc.add(Paragraph(employerName, italic))
             mDoc.add(Paragraph(duties))
         }
     }
 
-    private fun createEducationField(mDoc: Document){
+    private fun createEducationField(mDoc: Document) {
         val boldFont2 = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.BOLD)
 
-        for(i in schoolName.indices){
-            val startDate = eduStartDay[i].selectedItem.toString() + "/" + eduStartMonth[i].selectedItem.toString() + "/" + eduStartYear[i].selectedItem.toString()
-            val endDate = eduEndDay[i].selectedItem.toString() + "/" + eduEndMonth[i].selectedItem.toString() + "/" + eduEndYear[i].selectedItem.toString()
+        for (i in schoolName.indices) {
+            val startDate =
+                eduStartDay[i].selectedItem.toString() + "/" + eduStartMonth[i].selectedItem.toString() + "/" + eduStartYear[i].selectedItem.toString()
+            val endDate =
+                eduEndDay[i].selectedItem.toString() + "/" + eduEndMonth[i].selectedItem.toString() + "/" + eduEndYear[i].selectedItem.toString()
             val schoolName = schoolName[i].text.toString()
             val city = schoolCity[i].text.toString()
             val country = schoolCountry[i].text.toString()
@@ -203,5 +210,17 @@ class CreatePage: AppCompatActivity() {
             }
         }
     }
+
+    private fun topNavBarListenerSetup() {
+        top_navigation.setOnMenuItemClickListener {
+            when (it.itemId) {//like switch statement
+                R.id.action_logout-> {
+                    Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else->true
+                }
+            }
+        }
 }
 
