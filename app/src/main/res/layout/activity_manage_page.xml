@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/top_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/holo_blue_light"
+        app:titleTextColor="@android:color/white"
+        app:menu="@menu/top_nav_menu"
+        />
 
     <LinearLayout
         android:id="@+id/manageLayout"
@@ -13,16 +20,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/log_out_button"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@android:color/holo_blue_light"
-            android:textColor="@android:color/white"
-            android:text="Log Out" />
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

@@ -191,6 +191,18 @@ class CreatePage: AppCompatActivity() {
 
     }
 
+    private fun topNavBarListenerSetup() {
+        top_navigation.setOnMenuItemClickListener {
+            when (it.itemId) {//like switch statement
+                R.id.action_logout-> {
+                    Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else->true
+            }
+        }
+    }
+
     private fun bottomNavBarListenerSetup() {
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
@@ -211,16 +223,5 @@ class CreatePage: AppCompatActivity() {
         }
     }
 
-    private fun topNavBarListenerSetup() {
-        top_navigation.setOnMenuItemClickListener {
-            when (it.itemId) {//like switch statement
-                R.id.action_logout-> {
-                    Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else->true
-                }
-            }
-        }
 }
 

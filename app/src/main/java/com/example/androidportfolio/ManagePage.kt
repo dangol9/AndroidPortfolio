@@ -15,7 +15,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.android.synthetic.main.activity_create_page.*
 import kotlinx.android.synthetic.main.activity_manage_page.*
+import kotlinx.android.synthetic.main.activity_manage_page.bottom_navigation
+import kotlinx.android.synthetic.main.activity_manage_page.top_navigation
 import java.io.File
 
 
@@ -46,12 +49,10 @@ class ManagePage : AppCompatActivity() {
         val path = getExternalFilesDir(showEmail()).toString() + "/"
         Toast.makeText(this, "Logged in as: " + showEmail(), Toast.LENGTH_SHORT).show()
 
+        topNavBarListenerSetup()
         bottomNavBarListenerSetup()
         listFilesInDirectory(path)
 
-        log_out_button.setOnClickListener{
-            logOut()
-        }
 
         //essential if sdk >= 24
         val builder = VmPolicy.Builder()
@@ -149,6 +150,18 @@ class ManagePage : AppCompatActivity() {
             //refresh page
             finish()
             startActivity(getIntent())
+        }
+    }
+
+    private fun topNavBarListenerSetup() {
+        top_navigation.setOnMenuItemClickListener {
+            when (it.itemId) {//like switch statement
+                R.id.action_logout-> {
+                    Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else->true
+            }
         }
     }
 
