@@ -29,4 +29,5 @@ Meeskond: Andreas Malleus ja Daniel Golubkov<br>
 3. Väljalogimine <br>
 4. CV lisamine andmebaasi PDF formaadis* <br>
 5. CV kustutamine <br>
+6. CV vaatamine <br>
 *PDF failid on füüsiliselt ka olemas telefonis. <br>
