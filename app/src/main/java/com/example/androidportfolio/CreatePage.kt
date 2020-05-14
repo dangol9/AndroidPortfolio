@@ -1,7 +1,10 @@
 package com.example.androidportfolio
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -24,6 +27,8 @@ import java.io.FileOutputStream
 
 class CreatePage: AppCompatActivity() {
 
+    private val STORAGE_CODE: Int = 10;
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -31,6 +36,23 @@ class CreatePage: AppCompatActivity() {
         topNavBarListenerSetup()
         bottomNavBarListenerSetup()
         createPdfButtonListener()
+
+
+
+        addData.setOnClickListener {
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                    //IF DENIED ASK
+                    val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    requestPermissions(permissions, STORAGE_CODE)
+                }else{
+                    savePdf();
+                }
+
+            }else{
+                savePdf();
+            }
+        }
 
         personalInformationTextView.setOnClickListener {
             personalInformationView(this)
