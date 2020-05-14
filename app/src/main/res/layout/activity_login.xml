@@ -39,27 +39,27 @@
         app:layout_constraintTop_toBottomOf="@+id/email_login" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/sign_in_button"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_button"
-        android:text="Log in"
+        android:text="Sign in"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@+id/password_login"
         app:layout_constraintStart_toStartOf="@+id/password_login"
         app:layout_constraintTop_toBottomOf="@+id/password_login" />
 
     <TextView
-        android:id="@+id/back_to_register"
+        android:id="@+id/back_to_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Back to registration"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/login_button"
-        app:layout_constraintStart_toStartOf="@+id/login_button"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        android:text="Don't have an account? Sign up here"
+        android:textColor="@android:color/holo_blue_light"
+        app:layout_constraintEnd_toEndOf="@+id/sign_in_button"
+        app:layout_constraintStart_toStartOf="@+id/sign_in_button"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.firebase.storage.ktx.storageMetadata
@@ -48,12 +49,11 @@ class CreatePage: AppCompatActivity() {
         }
     }
 
-
     private fun showEmail(): String? {
-        // val bundle = intent.extras
-        //val email = bundle!!.getString("email")
-        // var emailCut = email?.substring(0, email.lastIndexOf("@"));
-        return "kaarel"
+        val bundle = intent.extras
+        val email = bundle!!.getString("email")
+        var emailCut = email?.substring(0, email.lastIndexOf("@"));
+        return emailCut.toString()
     }
 
     fun createPdfButtonListener() {
@@ -72,6 +72,7 @@ class CreatePage: AppCompatActivity() {
             mDoc.open()
 
             createPdfTemplate(mDoc)
+            Toast.makeText(this, "Logged in as: " + showEmail(), Toast.LENGTH_SHORT).show()
 
             mDoc.close()
             Log.d("Pdf created ", mFilePath)
@@ -196,11 +197,18 @@ class CreatePage: AppCompatActivity() {
             when (it.itemId) {//like switch statement
                 R.id.action_logout-> {
                     Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
+                    logOut()
                     true
                 }
                 else->true
             }
         }
+    }
+
+    private fun logOut(){
+        FirebaseAuth.getInstance().signOut();
+        var intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun bottomNavBarListenerSetup() {
@@ -212,9 +220,9 @@ class CreatePage: AppCompatActivity() {
                 }
                 R.id.action_manage -> {
                     val bundle = intent.extras
-                    //val email = bundle!!.getString("email")
+                    val email = bundle!!.getString("email")
                     val intent = Intent(this, ManagePage::class.java)
-                    //intent.putExtra("email", email)
+                    intent.putExtra("email", email)
                     startActivity(intent);
                     true
                 }

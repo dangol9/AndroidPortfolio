@@ -11,11 +11,11 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import kotlinx.android.synthetic.main.activity_create_page.*
 import kotlinx.android.synthetic.main.activity_manage_page.*
 import kotlinx.android.synthetic.main.activity_manage_page.bottom_navigation
 import kotlinx.android.synthetic.main.activity_manage_page.top_navigation
@@ -25,29 +25,10 @@ import java.io.File
 class ManagePage : AppCompatActivity() {
 
 
-
-
-    private fun logOut(){
-        FirebaseAuth.getInstance().signOut();
-        var intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-    }
-
-
-    private fun showEmail(): String? {
-        val bundle = intent.extras
-        //val email = bundle!!.getString("email")
-        //var emailCut = email?.substring(0, email.lastIndexOf("@"))
-        return "kaarel"
-
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_page)
         val path = getExternalFilesDir(showEmail()).toString() + "/"
-        Toast.makeText(this, "Logged in as: " + showEmail(), Toast.LENGTH_SHORT).show()
 
         topNavBarListenerSetup()
         bottomNavBarListenerSetup()
@@ -59,13 +40,14 @@ class ManagePage : AppCompatActivity() {
         StrictMode.setVmPolicy(builder.build())
         builder.detectFileUriExposure()
 
-
-
-
     }
 
-
-
+    private fun showEmail(): String? {
+        val bundle = intent.extras
+        val email = bundle!!.getString("email")
+        var emailCut = email?.substring(0, email.lastIndexOf("@"))
+        return emailCut.toString()
+    }
 
     //hiljem proovida listina
     private fun listFilesInDirectory(path: String){
@@ -158,6 +140,7 @@ class ManagePage : AppCompatActivity() {
             when (it.itemId) {//like switch statement
                 R.id.action_logout-> {
                     Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
+                    logOut()
                     true
                 }
                 else->true
@@ -165,14 +148,20 @@ class ManagePage : AppCompatActivity() {
         }
     }
 
+    private fun logOut(){
+        FirebaseAuth.getInstance().signOut();
+        var intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun bottomNavBarListenerSetup(){
         bottom_navigation.setOnNavigationItemSelectedListener {item ->
             when(item.itemId){//like switch statement
                 R.id.action_create -> {
                     val bundle = intent.extras
-                    //val email = bundle!!.getString("email")
+                    val email = bundle!!.getString("email")
                     val intent = Intent(this, CreatePage::class.java)
-                    //intent.putExtra("email", email)
+                    intent.putExtra("email", email)
                     startActivity(intent)
                     true
                 }

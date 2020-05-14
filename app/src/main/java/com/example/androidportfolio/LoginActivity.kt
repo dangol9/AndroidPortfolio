@@ -16,19 +16,17 @@ class LoginActivity: AppCompatActivity() {
 
     setContentView(R.layout.activity_login)
 
-        login_button.setOnClickListener{
+        sign_in_button.setOnClickListener{
             performLogIn()
         }
 
 
         //change page to register page
-        back_to_register.setOnClickListener {
+        back_to_sign_up.setOnClickListener {
             Log.d("LoginActivity", "try to show register activity")
             var intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-
         }
-
     }
 
     private fun performLogIn(){

@@ -15,11 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".LoginActivity"
+            android:name=".CreatePage"
             tools:ignore="DuplicateActivity"/>
 
         <activity
-            android:name=".CreatePage"
+            android:name=".LoginActivity"
             android:label="CVApp"
             android:windowSoftInputMode="adjustResize">
         <intent-filter>
