@@ -26,7 +26,6 @@ class RegisterActivity : AppCompatActivity() {
         }
         //change page to login page
         already_existing_account.setOnClickListener {
-            Log.d("RegisterActivity", "try to show login activity")
             var intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
 

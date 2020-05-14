@@ -23,7 +23,6 @@ class LoginActivity: AppCompatActivity() {
 
         //change page to register page
         back_to_sign_up.setOnClickListener {
-            Log.d("LoginActivity", "try to show register activity")
             var intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
