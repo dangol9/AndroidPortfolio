@@ -19,7 +19,7 @@ Meeskond: Andreas Malleus ja Daniel Golubkov<br>
 2. Paigaldada kõik tehnoloogiad, mis olid kasutusel. <br>
 3. Paigaldada ja seadistada vajalik emulaator. <br>
 4. Teha git clone projektist. <br>
-5. Avada vajalik kaust Android Studios. <br>
+5. Avada projekti kaust Android Studios. <br>
 6. File > Sync With File System ja Sync With Gradle Files. <br>
 7. Nüüd rakendus saab käivitada emulaatoriga. <br>
 
