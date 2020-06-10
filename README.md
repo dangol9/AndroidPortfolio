@@ -24,4 +24,10 @@ Meeskond: Andreas Malleus ja Daniel Golubkov<br>
 7. Nüüd rakendus saab käivitada emulaatoriga. <br>
 
 <b>Funktsionaalsus</b>: <br>
-Soon
+1. Kasutaja registreerimine <br>
+2. Kasutaja sisselogimine <br>
+3. Väljalogimine <br>
+4. CV lisamine andmebaasi PDF formaadis* <br>
+5. CV kustutamine <br>
+6. CV vaatamine <br>
+*PDF failid on füüsiliselt ka olemas telefonis. <br>
